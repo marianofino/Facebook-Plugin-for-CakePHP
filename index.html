@@ -22,8 +22,8 @@
           <h2 id="project_tagline">DataSource and oAuth for CakePHP 2.x based on Facebook API</h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/marianofino/Facebook-DataSource-for-CakePHP/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/marianofino/Facebook-DataSource-for-CakePHP/tarball/master">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/marianofino/Facebook-Plugin-for-CakePHP/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/marianofino/Facebook-Plugin-for-CakePHP/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
@@ -91,15 +91,26 @@ class UsersController extends AppController {
 			</li>
         </ol>
 
-<p>You're ready!! If you experience any problem, please </p>
+<p>You're ready!! If you experience any problem, please go to the <a href="#comments">support section</a>.</p>
 
 <h3>Usage</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>For example, to read information from the FQL table "user", you can do in any controller:
+	<pre>$uses = array('Facebook.FacebookUser');
+		public function viewUser() {
+			$options = array(
+				array(
+					'fields' => array('username','first_name','last_name'),
+					'conditions' => ('id' => '1390757189')
+			);
+			$userInfo = $this->FacebookUser->find('all', $options))
+		}</pre></p>
 
-<h3>Rather Drive Stick?</h3>
+<p>For now, you can only read information, by using the method <strong>find('all', $options)</strong>. For more information you can look at the <a href="https://developers.facebook.com/docs/reference/fql/">FQL reference</a>. Another limitation, is that only supports "user" table by now.</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<h3>How to Contribute</h3>
+
+<p>If you want to contribute please get in touch through the <a href="#comments">support forum</a>, by <a href="http://twitter.com/finomdq" target="_blank">twitter</a> or <a href="https://github.com/marianofino/Facebook-Plugin-for-CakePHP/issues" target="_blank">github</a>. Also, you can check or submit issues on github.</p>
 
 <h3>Authors and Contributors</h3>
 
@@ -110,22 +121,23 @@ class UsersController extends AppController {
 
 <p>This software is released under the <a href="http://www.gnu.org/licenses/lgpl-3.0.txt">GNU LGPL License</a>.</p>
 
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'facebookpluginforcakephp'; // required: replace example with your forum shortname
+<h3 id="comments">Comments &amp; Support</h3>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'facebookpluginforcakephp'; // required: replace example with your forum shortname
 
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+ 
       </section>
     </div>
     

@@ -83,7 +83,7 @@ class FQL extends DataSource {
             throw new CakeException($error);
 		}
 		
-        return array($model->alias => $res);
+        return array($model->alias => $res['data'][0]);
     }
 
 	/**

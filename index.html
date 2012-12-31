@@ -32,24 +32,25 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h3>Installation</h3>
-        <ol>
-        	<li>Download, unzip and rename the folder to <strong>Facebook</strong> and move it to the Plugin's folder of your CakePHP project.</li>
-        	<li>
-        		In Config/bootstrap.php, enable the plugin and it's bootstrap, by adding a line like this:
+        <div class="step">
+        	<strong>Step 1. </strong>Download, unzip and rename the folder to <strong>Facebook</strong> and move it to the Plugin's folder of your CakePHP project.</li>
+
+        	
+        </div>
+        <div class="step"><strong>Step 2.</strong> In Config/bootstrap.php, enable the plugin and it's bootstrap, by adding a line like this:
         		<pre>CakePlugin::loadAll(
 	array('Facebook' => array('bootstrap' => true))
 );</pre>
-        		</li>
-        	<li>
-				You <strong>must</strong> have a table for Users, with at least one field for "username". Something like this is fine:
+        </div>
+        <div class="step">
+        	<strong>Step 3.</strong> You <strong>must</strong> have a table for Users, with at least one field for "username". Something like this is fine:
 				<pre>CREATE TABLE users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50)
 );</pre>
-				
-			</li>
-        	<li>
-        		Enable Auth component in AppController.php and link it to Facebook Authentication. For example:
+        </div>
+        <div class="step">
+        	<strong>Step 4.</strong> Enable Auth component in AppController.php and link it to Facebook Authentication. For example:
         		<pre>public $components = array(
 	'Auth' => array(
 		'loginRedirect' => '/',
@@ -60,9 +61,9 @@
 		)
 	)
 );</pre>
-        		</li>
-        	<li>
-        		Create a controller with some default actions for login() and logout(). For example:
+        </div>
+		<div class="step">
+			<strong>Step 5.</strong> Create a controller with some default actions for login() and logout(). For example:
 <pre><&#63;php
 App::uses('AppController', 'Controller');
 class UsersController extends AppController {
@@ -80,16 +81,16 @@ class UsersController extends AppController {
 	}
 }
 &#63;></pre>
-        	</li>
-        	<li>Enter the AppKey and AppSecret from your Facebook App, your app complete url, and your login action:
+		</div>
+		<div class="step">
+			<strong>Step 6.</strong> Enter the AppKey and AppSecret from your Facebook App, your app complete url, and your login action:
 <pre>$config = array(
 	'app_url' => 'http://www.yourdomain.com/path/to/cake',
 	'app_id' => '396146xxxxxxxxx',
 	'app_secret' => '55b41b0e7594bc287dc1xxxxxxxxxxxx',
 	'login_url' => array('controller' => 'users', 'action' => 'login') // remains the same
 );</pre>
-			</li>
-        </ol>
+		</div>
 
 <p>You're ready!! If you experience any problem, please go to the <a href="#comments">support section</a>.</p>
 
@@ -120,7 +121,7 @@ public function viewUser() {
 
 <h3>License</h3>
 
-<p>This software is released under the <a href="http://www.gnu.org/licenses/lgpl-3.0.txt">GNU LGPL License</a>.</p>
+<p>This software is released under the <a href="http://www.gnu.org/licenses/lgpl-3.0.txt" target="_blank">GNU LGPL License</a>.</p>
 
 <h3 id="comments">Comments &amp; Support</h3>
 
@@ -137,7 +138,7 @@ public function viewUser() {
     })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<a href="http://disqus.com" class="dsq-brlink" target="_blank">comments powered by <span class="logo-disqus">Disqus</span></a>
  
       </section>
     </div>
@@ -146,8 +147,8 @@ public function viewUser() {
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Facebook Plugin for CakePHP maintained by <a href="https://github.com/marianofino">marianofino</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">Facebook Plugin for CakePHP maintained by <a href="https://github.com/marianofino" target="_blank">marianofino</a></p>
+        <p>Published with <a href="http://pages.github.com" target="_blank">GitHub Pages</a></p>
       </footer>
     </div>
 

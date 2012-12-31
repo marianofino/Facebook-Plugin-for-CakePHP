@@ -68,7 +68,7 @@ class FQL extends DataSource {
 		 * Build Statement
 		 */ 
 		$fql = $this->buildStatement($queryData, $model->table);
-		var_dump($fql); exit;
+		
 		 /**
          * Now we get, decode and return the remote data.
          */
@@ -106,9 +106,13 @@ class FQL extends DataSource {
 	}
 	
 	public function buildStatement($queryData, $table) {
-		if (isset($queryData['fields']) && isset($queryData['conditions'])) {
+		if (isset($queryData['fields'])) {
+			if (!isset($queryData['conditions'])) {
+				$conditions = "uid+=+me()";
+			} else {
+				$conditions = $this->parseConditions($queryData['conditions']);
+			}
 			$fields = implode(",",$queryData['fields']);
-			$conditions = $this->parseConditions($queryData['conditions']);
 			
 			return "SELECT+".$fields."+FROM+".$table."+WHERE+".$conditions;
 		} else {

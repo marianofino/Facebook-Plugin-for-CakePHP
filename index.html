@@ -52,6 +52,7 @@
         <div class="step">
         	<strong>Step 4.</strong> Enable Auth component in AppController.php and link it to Facebook Authentication. For example:
         		<pre>public $components = array(
+	'Session',
 	'Auth' => array(
 		'loginRedirect' => '/',
 		'logoutRedirect' => '/',
@@ -63,7 +64,7 @@
 );</pre>
         </div>
 		<div class="step">
-			<strong>Step 5.</strong> Create a controller with some default actions for login() and logout(). For example:
+			<strong>Step 5.</strong> Create a controller with some default actions for login() and logout(). For example UsersController.php:
 <pre><&#63;php
 App::uses('AppController', 'Controller');
 class UsersController extends AppController {
@@ -94,7 +95,7 @@ class UsersController extends AppController {
 		<div class="step">
 			<strong>Step 7.</strong> Include the Facebook Helper, so you can make use of the Facebook Login button. Example:
 			<pre>//In controller
-$helpers = array=('Facebook.FacebookHelper');
+public $helpers = array('Facebook.Facebook','Session','Html'));
 
 //In view, login & logout
 echo $this->Facebook->loginButton('Login');

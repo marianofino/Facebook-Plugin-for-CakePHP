@@ -16,7 +16,7 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/marianofino/Facebook-Plugin-for-CakePHP">View on GitHub</a>
+          <a id="forkme_banner" target="_blank" href="https://github.com/marianofino/Facebook-Plugin-for-CakePHP">View on GitHub</a>
 
           <h1 id="project_title">Facebook Plugin for CakePHP</h1>
           <h2 id="project_tagline">DataSource and oAuth for CakePHP 2.x based on Facebook API</h2>
@@ -31,18 +31,69 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+        <h3>Installation</h3>
+        <ol>
+        	<li>Download, unzip and rename the folder to <strong>Facebook</strong> and move it to the Plugin's folder of your CakePHP project.</li>
+        	<li>
+        		In Config/bootstrap.php, enable the plugin and it's bootstrap, by adding a line like this:
+        		<pre>CakePlugin::loadAll(
+	array('Facebook' => array('bootstrap' => true))
+);</pre>
+        		</li>
+        	<li>
+				You <strong>must</strong> have a table for Users, with at least one field for "username". Something like this is fine:
+				<pre>CREATE TABLE users (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50)
+);</pre>
+				
+			</li>
+        	<li>
+        		Enable Auth component in AppController.php and link it to Facebook Authentication. For example:
+        		<pre>public $components = array(
+	'Auth' => array(
+		'loginRedirect' => '/',
+		'logoutRedirect' => '/',
+		'authenticate' => array(
+			'all' => array('userModel' => 'User'),
+			'Facebook.Oauth'
+		)
+	)
+);</pre>
+        		</li>
+        	<li>
+        		Create a controller with some default actions for login() and logout(). For example:
+<pre><&#63;php
+App::uses('AppController', 'Controller');
+class UsersController extends AppController {
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+	public function login() {
+		if ($this->Auth->login()) {
+			$this->redirect($this->Auth->redirect());
+		} else {
+			$this->Session->setFlash(__('Your login failed'), 'default', array(), 'auth');
+		}
+	}
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+	public function logout() {
+		$this->redirect($this->Auth->logout());
+	}
+}
+&#63;></pre>
+        	</li>
+        	<li>Enter the AppKey and AppSecret from your Facebook App, your app complete url, and your login action:
+<pre>$config = array(
+	'app_url' => 'http://www.yourdomain.com/path/to/cake',
+	'app_id' => '396146xxxxxxxxx',
+	'app_secret' => '55b41b0e7594bc287dc1xxxxxxxxxxxx',
+	'login_url' => array('controller' => 'users', 'action' => 'login') // remains the same
+);</pre>
+			</li>
+        </ol>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>You're ready!! If you experience any problem, please </p>
 
-<h3>Designer Templates</h3>
+<h3>Usage</h3>
 
 <p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
 
@@ -52,23 +103,42 @@ $ git checkout gh-pages
 
 <h3>Authors and Contributors</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>Copyright (c) 2012 - Mariano Finochietto // twitter: @finomdq // github: @marianofino.</p> <!-- <a href="https://github.com/mojombo" class="user-mention">@mojombo</a> -->
+<p>The Auth component is based on the danielauener's "FacebookAuthenticate". You can find more information here: <a href="https://github.com/danielauener/cake-social-custom-auth" target="_blank">https://github.com/danielauener/cake-social-custom-auth</a></p>
 
-<h3>Support or Contact</h3>
+<h3>License</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>This software is released under the <a href="http://www.gnu.org/licenses/lgpl-3.0.txt">GNU LGPL License</a>.</p>
+
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'facebookpluginforcakephp'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
       </section>
     </div>
+    
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Facebook-datasource-for-cakephp maintained by <a href="https://github.com/marianofino">marianofino</a></p>
+        <p class="copyright">Facebook Plugin for CakePHP maintained by <a href="https://github.com/marianofino">marianofino</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
 
-    
+
 
   </body>
 </html>

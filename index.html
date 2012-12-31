@@ -97,20 +97,21 @@ class UsersController extends AppController {
 
 <p>For example, to read information from the FQL table "user", you can do in any controller:
 	<pre>$uses = array('Facebook.FacebookUser');
-		public function viewUser() {
-			$options = array(
-				array(
-					'fields' => array('username','first_name','last_name'),
-					'conditions' => ('id' => '1390757189')
-			);
-			$userInfo = $this->FacebookUser->find('all', $options))
-		}</pre></p>
+public function viewUser() {
+	$options = array(
+		array(
+			'fields' => array('username','first_name','last_name'),
+			'conditions' => ('id' => '1390757189')
+		)
+	);
+	$userInfo = $this->FacebookUser->find('all', $options);
+}</pre></p>
 
 <p>For now, you can only read information, by using the method <strong>find('all', $options)</strong>. For more information you can look at the <a href="https://developers.facebook.com/docs/reference/fql/">FQL reference</a>. Another limitation, is that only supports "user" table by now.</p>
 
 <h3>How to Contribute</h3>
 
-<p>If you want to contribute please get in touch through the <a href="#comments">support forum</a>, by <a href="http://twitter.com/finomdq" target="_blank">twitter</a> or <a href="https://github.com/marianofino/Facebook-Plugin-for-CakePHP/issues" target="_blank">github</a>. Also, you can check or submit issues on github.</p>
+<p>If you want to contribute please get in touch through the <a href="#comments">support section</a>, by <a href="http://twitter.com/finomdq" target="_blank">twitter</a> or <a href="https://github.com/marianofino/Facebook-Plugin-for-CakePHP" target="_blank">github</a>. Also, you can fix or submit new issues on <a href="https://github.com/marianofino/Facebook-Plugin-for-CakePHP/issues" target="_blank">github</a>.</p>
 
 <h3>Authors and Contributors</h3>
 

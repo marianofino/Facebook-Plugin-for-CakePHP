@@ -12,11 +12,7 @@ class FacebookUser extends AppModel {
 	public function getFullData() {
 		$fields = array(
             "id",
-            "email",
-            "first_name",
-            "last_name",
-            "birthday",
-            "gender"
+            "username"
 		);
 		return $this->find('all', array('fields' => $fields));
 	}

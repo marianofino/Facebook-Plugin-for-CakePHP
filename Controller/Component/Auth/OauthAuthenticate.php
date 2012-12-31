@@ -45,13 +45,11 @@
 						
                         App::uses('User', 'Model');
                         $User = new User();
-                        $user = $User->find("first",array("conditions" => array("facebook_id" => $fb_user['FacebookUser']['id'])));
+                        $user = $User->find("first",array("conditions" => array("username" => $fb_user['FacebookUser']['username'])));
                         if (!$user) {
                             $user = array(
                                 "User" => array(
-                                    "username" => $fb_user['FacebookUser']['username'],
-                                    "first_name" => $fb_user['FacebookUser']['first_name'],
-                                    "last_name" => $fb_user['FacebookUser']['last_name']
+                                    "username" => $fb_user['FacebookUser']['username']
                                 )
                             );
                             $User->create();

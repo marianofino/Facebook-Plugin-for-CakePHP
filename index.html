@@ -67,16 +67,16 @@
 			<strong>Step 5.</strong> In Config/database.php, enter the AppKey and AppSecret from your Facebook App, your app complete url, and your login action:
 <pre>public $facebook = array(
 	'datasource' => 'Facebook.FQL',
-	'app_url' => 'http://localhost/FacebookPlugin', // or just http://www.yourdomain.com if it's on the root
-	'app_id' => '358688717501671',
-	'app_secret' => '6059c46e3623466d748daf6303397234',
+	'app_url' => 'http://www.yourdomain.com/path/to/cake', // or just http://www.yourdomain.com if it's on the root
+	'app_id' => '35868871xxxxxx',
+	'app_secret' => '6059c46e362346xxxxxxxxxxxx',
 	'login_url' => array('controller' => 'users', 'action' => 'login') // probably right
 );</pre>
 		</div>
 
-<p>You're ready!! Now go to If you experience any problem, please go to the <a href="#comments">support section</a>.</p>
+<p>You're ready!! Now proceed with the <a href="#tutorial">tutorial</a>.</p>
 
-<h3>Usage</h3>
+<h3 id="tutorial">Usage</h3>
 
 <p>This is a tiny tutorial to learn the basis:</p>
 
@@ -90,8 +90,6 @@ class UsersController extends AppController {
 	public function login() {
 		if ($this->Auth->login()) {
 			$this->redirect($this->Auth->redirect());
-		} else {
-			$this->Session->setFlash(__('Your login failed'), 'default', array(), 'auth');
 		}
 	}
 
@@ -119,19 +117,12 @@ class User extends AppModel {
 			<strong>Step 3.</strong> Create 2 views. One in Users/login.ctp and the other in Users/view.ctp:
 			<p>login.ctp
 			<pre><&#63;php
-if (!$this->Session->read('Auth.User')) {
 	echo $this->Facebook->loginButton('Login');
-} else {
-	echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));
-}
 &#63;></pre></p>
 			<p>view.ctp
 			<pre><&#63;php
-if (!$this->Session->read('Auth.User')) {
-	echo $this->Facebook->loginButton('Login');
-} else {
+	echo "Hello ".$userInfo['FacebookUser']['first_name']." ".$userInfo['FacebookUser']['last_name']."<br />";
 	echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));
-}
 &#63;></pre></p>
 		</div>
 

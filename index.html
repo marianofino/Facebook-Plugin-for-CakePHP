@@ -99,7 +99,7 @@ class UsersController extends AppController {
 	}
 	
 	public function view() {
-		$userInfo = $this->FacebookUser->find('all', array('conditions' => array('username' => $this->Auth->User('id')), 'fields' => array('first_name','last_name')));
+		$userInfo = $this->FacebookUser->find('all', array('conditions' => array('username' => $this->Auth->User('username')), 'fields' => array('first_name','last_name')));
 		$this->set(compact('userInfo'));
 	}
 }

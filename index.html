@@ -64,11 +64,28 @@
 );</pre>
         </div>
 		<div class="step">
-			<strong>Step 5.</strong> Create a model & controller with some default actions for login() and logout(). For example UsersController.php and User.php:
-<p>Controller:
+			<strong>Step 5.</strong> In Config/database.php, enter the AppKey and AppSecret from your Facebook App, your app complete url, and your login action:
+<pre>public $facebook = array(
+	'datasource' => 'Facebook.FQL',
+	'app_url' => 'http://localhost/FacebookPlugin', // or just http://www.yourdomain.com if it's on the root
+	'app_id' => '358688717501671',
+	'app_secret' => '6059c46e3623466d748daf6303397234',
+	'login_url' => array('controller' => 'users', 'action' => 'login') // probably right
+);</pre>
+		</div>
+
+<p>You're ready!! Now go to If you experience any problem, please go to the <a href="#comments">support section</a>.</p>
+
+<h3>Usage</h3>
+
+<p>This is a tiny tutorial to learn the basis:</p>
+
+		<div class="step">
+			<strong>Step 1.</strong> Create a controller with some default actions for login() and logout(). Also we will add some method to test the API. Create UsersController.php like this:
 <pre><&#63;php
 App::uses('AppController', 'Controller');
 class UsersController extends AppController {
+	public $helpers = array('Facebook.Facebook','Session','Html'));
 
 	public function login() {
 		if ($this->Auth->login()) {
@@ -81,45 +98,42 @@ class UsersController extends AppController {
 	public function logout() {
 		$this->redirect($this->Auth->logout());
 	}
+	
+	public function getUserInfo() {
+		$userInfo = $this->FacebookUser->find('all', 'conditions' => array('username' => $this->Auth->User('id'), 'fields' => array('first_name','last_name'));
+		$this->set(compact('userInfo'));
+	}
 }
 &#63;>
-</pre></p>
-<p>Model:
+</pre>
+		<div class="step">
+			<strong>Step 2.</strong> Create a simple model, like this:
 <pre><&#63;php
 App::uses('AppModel', 'Model');
 
 class User extends AppModel {
 }
-&#63;></pre></p>
+&#63;></pre>
 		</div>
 		<div class="step">
-			<strong>Step 6.</strong> In Config/database.php, enter the AppKey and AppSecret from your Facebook App, your app complete url, and your login action:
-<pre>public $facebook = array(
-	'datasource' => 'Facebook.FQL',
-	'app_url' => 'http://localhost/FacebookPlugin', // or just http://www.yourdomain.com if it's on the root
-	'app_id' => '358688717501671',
-	'app_secret' => '6059c46e3623466d748daf6303397234',
-	'login_url' => array('controller' => 'users', 'action' => 'login') // probably right
-);</pre>
-		</div>
-		<div class="step">
-			<strong>Step 7.</strong> Include the Facebook Helper, so you can make use of the Facebook Login button. In UsersController.php and Users/login.ctp:
-			<pre>//In controller
-public $helpers = array('Facebook.Facebook','Session','Html'));
-
-//In view, login & logout
-<&#63;php
+			<strong>Step 3.</strong> Create 2 views. One in Users/login.ctp and the other in Users/view.ctp:
+			<p>login.ctp
+			<pre><&#63;php
 if (!$this->Session->read('Auth.User')) {
 	echo $this->Facebook->loginButton('Login');
 } else {
 	echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));
 }
-&#63;></pre>
+&#63;></pre></p>
+			<p>view.ctp
+			<pre><&#63;php
+if (!$this->Session->read('Auth.User')) {
+	echo $this->Facebook->loginButton('Login');
+} else {
+	echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));
+}
+&#63;></pre></p>
 		</div>
-
-<p>You're ready!! If you experience any problem, please go to the <a href="#comments">support section</a>.</p>
-
-<h3>Usage</h3>
 
 <p>For example, to read information from the FQL table "user", you can do in any controller:
 	<pre>$uses = array('Facebook.FacebookUser');

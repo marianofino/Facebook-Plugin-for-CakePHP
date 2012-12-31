@@ -8,6 +8,7 @@ App::uses('AppModel', 'Model');
  */
 class FacebookUser extends AppModel {
     public $useDbConfig = 'facebook';
+	public $useTable = "user";
 	
 	public function getFullData() {
 		$fields = array(

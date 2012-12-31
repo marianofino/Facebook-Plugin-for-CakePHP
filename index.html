@@ -91,6 +91,15 @@ class UsersController extends AppController {
 	'login_url' => array('controller' => 'users', 'action' => 'login') // remains the same
 );</pre>
 		</div>
+		<div class="step">
+			<strong>Step 7.</strong> Include the Facebook Helper, so you can make use of the Facebook Login button. Example:
+			<pre>//In controller
+$helpers = array=('Facebook.FacebookHelper');
+
+//In view, login & logout
+echo $this->Facebook->loginButton('Login');
+echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));</pre>
+		</div>
 
 <p>You're ready!! If you experience any problem, please go to the <a href="#comments">support section</a>.</p>
 

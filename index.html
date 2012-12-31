@@ -126,6 +126,10 @@ class User extends AppModel {
 &#63;></pre></p>
 		</div>
 
+<h3>Appendix</h3>
+
+<p>For now, you can only read information, by using the method <strong>find('all', $options)</strong>. For more information you can look at the <a href="https://developers.facebook.com/docs/reference/fql/">FQL reference</a>. Another limitation, is that only supports "user" table by now.</p>
+
 <p>For example, to read information from the FQL table "user", you can do in any controller:
 	<pre>$uses = array('Facebook.FacebookUser');
 public function viewUser() {
@@ -137,8 +141,6 @@ public function viewUser() {
 	);
 	$userInfo = $this->FacebookUser->find('all', $options);
 }</pre></p>
-
-<p>For now, you can only read information, by using the method <strong>find('all', $options)</strong>. For more information you can look at the <a href="https://developers.facebook.com/docs/reference/fql/">FQL reference</a>. Another limitation, is that only supports "user" table by now.</p>
 
 <h3>How to Contribute</h3>
 

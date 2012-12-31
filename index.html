@@ -54,7 +54,7 @@
         		<pre>public $components = array(
 	'Session',
 	'Auth' => array(
-		'loginRedirect' => '/',
+		'loginRedirect' => array('controller' => 'users', 'action' => 'view'),
 		'logoutRedirect' => '/',
 		'authenticate' => array(
 			'all' => array('userModel' => 'User'),
@@ -85,7 +85,8 @@
 <pre><&#63;php
 App::uses('AppController', 'Controller');
 class UsersController extends AppController {
-	public $helpers = array('Facebook.Facebook','Session','Html'));
+	public $uses = array('Facebook.FacebookUser');
+	public $helpers = array('Facebook.Facebook','Session','Html');
 
 	public function login() {
 		if ($this->Auth->login()) {
@@ -97,13 +98,14 @@ class UsersController extends AppController {
 		$this->redirect($this->Auth->logout());
 	}
 	
-	public function getUserInfo() {
-		$userInfo = $this->FacebookUser->find('all', 'conditions' => array('username' => $this->Auth->User('id'), 'fields' => array('first_name','last_name'));
+	public function view() {
+		$userInfo = $this->FacebookUser->find('all', array('conditions' => array('username' => $this->Auth->User('id')), 'fields' => array('first_name','last_name')));
 		$this->set(compact('userInfo'));
 	}
 }
 &#63;>
 </pre>
+</div>
 		<div class="step">
 			<strong>Step 2.</strong> Create a simple model, like this:
 <pre><&#63;php
@@ -125,8 +127,10 @@ class User extends AppModel {
 	echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));
 &#63;></pre></p>
 		</div>
+		
+		<p>Congratulations! Now go to www.yourdomain.com/path/to/cake/ and test that everything works as expected!</p>
 
-<h3>Appendix</h3>
+<strong>Appendix</strong>
 
 <p>For now, you can only read information, by using the method <strong>find('all', $options)</strong>. For more information you can look at the <a href="https://developers.facebook.com/docs/reference/fql/">FQL reference</a>. Another limitation, is that only supports "user" table by now.</p>
 

@@ -112,7 +112,7 @@ For example, to read information from the FQL table "user", you can do in any co
     }
 
 ## How to Contribute
-If you want to contribute please get in touch through the [support section](http://marianofino.github.com/Facebook-Plugin-for-CakePHP/#comments), by [twitter](https://twitter.com/finomdq) or [github](https://github.com/marianofino). Also, you can fix or submit new issues on [github](https://github.com/marianofino/Facebook-Plugin-for-CakePHP).
+If you want to contribute please get in touch through the [support section](http://marianofino.github.com/Facebook-Plugin-for-CakePHP/#comments), by [twitter](https://twitter.com/finomdq) or [github](https://github.com/marianofino). Also, you can fix or submit new issues on [github](https://github.com/marianofino/Facebook-Plugin-for-CakePHP/issues).
 
 ## Authors and Contributors
 Copyright (c) 2012 - Mariano Finochietto // twitter: [@finomdq](https://twitter.com/finomdq) // github: [@marianofino](https://github.com/marianofino).

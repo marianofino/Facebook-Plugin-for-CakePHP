@@ -138,10 +138,8 @@ class User extends AppModel {
 	<pre>$uses = array('Facebook.FacebookUser');
 public function viewUser() {
 	$options = array(
-		array(
-			'fields' => array('username','first_name','last_name'),
-			'conditions' => ('id' => '1390757189')
-		)
+		'fields' => array('username','first_name','last_name'),
+		'conditions' => ('id' => '1390757189')
 	);
 	$userInfo = $this->FacebookUser->find('all', $options);
 }</pre></p>

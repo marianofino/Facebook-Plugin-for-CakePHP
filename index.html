@@ -136,7 +136,7 @@ echo $this->loginButton($label, $options, $permissions);
 public $uses = array('Facebook.FacebookAlbum');
 	
 // In the same Controller, in an action
-$albums = $this->FacebookAlbum->find('all', array('fields' => array('FacebookAlbum.name'), 'conditons' => array('FacebookAlbum.owner' => $this->Auth->User('uid'))));
+$albums = $this->FacebookAlbum->find('all', array('fields' => array('FacebookAlbum.name'), 'conditions' => array('FacebookAlbum.owner' => $this->Auth->User('uid'))));
 $this->set(compact('albums'));
 
 // In the view from that action

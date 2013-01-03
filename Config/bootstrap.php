@@ -30,9 +30,10 @@ $facebook_config = $facebook_datasource->config;
  * Write global constants for plugin. Do not touch unless you know what you're doing.
  * 
  **/
+$default_login_url = array('plugin' => 'facebook', 'controller' => 'users', 'action' => 'login');
 
 Configure::write('FacebookAppId', $facebook_config['app_id']);
 Configure::write('FacebookAppSecret', $facebook_config['app_secret']);
-Configure::write('OauthRedirectUrl', $facebook_config['app_url'].Router::url($facebook_config['login_url']));
+Configure::write('OauthRedirectUrl', $facebook_config['app_url'].Router::url($default_login_url));
 
 ?>

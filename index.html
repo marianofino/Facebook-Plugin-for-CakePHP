@@ -43,12 +43,12 @@
 );</pre>
         </div>
         <div class="step">
-        	<strong>Step 3.</strong> You <strong>must</strong> have a table for Users and a model, with at least one field for "username". If you don't have one, something like this is fine:
+        	<strong>Step 3.</strong> You <strong>must</strong> have a table for Users and a model, with at least one field for "uid". If you don't have one, something like this is fine:
 				<p>Table:
 				<pre>CREATE TABLE users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50),
-    facebook_id VARCHAR(50)
+    uid VARCHAR(50)
 );</pre>
 				</p>
 				<p>Model:
@@ -133,7 +133,7 @@ echo $this->loginButton($label, $options, $permissions);
 	public $uses = array('Facebook.FacebookAlbum');
 	
 	// In the same Controller, in an action
-	$albums = $this->FacebookAlbum->find('all', array('fields' => array('FacebookAlbum.name'), 'conditons' => array('owner' => $this->Auth->User('facebook_id'))));
+	$albums = $this->FacebookAlbum->find('all', array('fields' => array('FacebookAlbum.name'), 'conditons' => array('owner' => $this->Auth->User('uid'))));
 
 	// In the view from that action
 	foreach ($albums as $album) {

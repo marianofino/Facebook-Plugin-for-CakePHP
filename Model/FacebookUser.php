@@ -52,8 +52,8 @@ class FacebookUser extends AppModel {
 	
 	public function parseDataForDb($fb_user) {
     	$user = array();
-    	foreach ($fb_user['FacebookUser'] as $field) {
-    		$user['User'][] = $field;
+    	foreach ($fb_user['FacebookUser'] as $k => $field) {
+    		$user['User'][$k] = $field;
     	}
 		return $user;
 	}

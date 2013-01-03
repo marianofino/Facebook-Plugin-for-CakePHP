@@ -50,7 +50,7 @@
 						// Checks if user exists, if not saves it in db
                         App::uses('User', 'Model');
                         $User = new User();
-                        $user = $User->find("first",array("conditions" => array("username" => $fb_user['FacebookUser']['username'])));
+                        $user = $User->find("first",array("conditions" => array("User.uid" => $fb_user['FacebookUser']['uid'])));
 						
 						if (!$user) {
                         	$user = $FacebookUser->parseDataForDb($fb_user);

@@ -43,18 +43,34 @@
 );</pre>
         </div>
         <div class="step">
-        	<strong>Step 3.</strong> You <strong>must</strong> have a table for Users, with at least one field for "username". Something like this is fine:
+        	<strong>Step 3.</strong> You <strong>must</strong> have a table for Users and a model, with at least one field for "username". If you don't have one, something like this is fine:
+				<p>Table:
 				<pre>CREATE TABLE users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50)
+    username VARCHAR(50),
+    facebook_id VARCHAR(50)
 );</pre>
+				</p>
+				<p>Model:
+				<pre><&#63;php
+App::uses('AppModel', 'Model');
+
+class User extends AppModel {
+}
+&#63;></pre>
+				</p>
         </div>
         <div class="step">
         	<strong>Step 4.</strong> Enable Auth component in AppController.php and link it to Facebook Authentication. For example:
         		<pre>public $components = array(
 	'Session',
 	'Auth' => array(
-		'loginRedirect' => array('controller' => 'users', 'action' => 'view'),
+		'loginAction' => array(
+			'plugin' => 'facebook',
+			'controller' => 'users',
+			'action' => 'login'
+		),
+		'loginRedirect' => '/',
 		'logoutRedirect' => '/',
 		'authenticate' => array(
 			'all' => array('userModel' => 'User'),
@@ -69,83 +85,84 @@
 	'datasource' => 'Facebook.FQL',
 	'app_url' => 'http://www.yourdomain.com/path/to/cake', // or just http://www.yourdomain.com if it's on the root
 	'app_id' => '35868871xxxxxx',
-	'app_secret' => '6059c46e362346xxxxxxxxxxxx',
-	'login_url' => array('controller' => 'users', 'action' => 'login') // probably right
+	'app_secret' => '6059c46e362346xxxxxxxxxxxx'
 );</pre>
 		</div>
 
-<p>You're ready!! Now proceed with the <a href="#tutorial">tutorial</a>.</p>
+<p>You're ready!! Now proceed with the <a href="#usage">usage section</a>.</p>
 
-<h3 id="tutorial">Usage</h3>
+<h3 id="usage">Usage</h3>
 
-<p>This is a tiny tutorial to learn the basis:</p>
+<p>Here are some examples to learn the basis:</p>
 
 		<div class="step">
-			<strong>Step 1.</strong> Create a controller with some default actions for login() and logout(). Also we will add some method to test the API. Create UsersController.php like this:
-<pre><&#63;php
-App::uses('AppController', 'Controller');
-class UsersController extends AppController {
-	public $uses = array('Facebook.FacebookUser');
-	public $helpers = array('Facebook.Facebook','Session','Html');
+			<strong>Example 1.</strong> How to natively login to CakePHP Auth using Facebook:
+<pre>
 
-	public function login() {
-		if ($this->Auth->login()) {
-			$this->redirect($this->Auth->redirect());
-		}
-	}
+// In the Controller include FacebookHelper
+$helpers = array('Facebook.Facebook');
 
-	public function logout() {
-		$this->redirect($this->Auth->logout());
-	}
-	
-	public function view() {
-		$userInfo = $this->FacebookUser->find('all', array('conditions' => array('username' => $this->Auth->User('username')), 'fields' => array('first_name','last_name')));
-		$this->set(compact('userInfo'));
-	}
-}
-&#63;>
+// In the View print the login button
+echo $this->Facebook->loginButton();
+
+</pre>
+<p>By default, the above example will print a raw link with the label "Login". If you want to customize it, you can by passing some params:</p>
+<pre>
+
+// The text of the link
+$label = "Facebook Login!";
+
+// The same options as HtmlHelper::link()
+$options = array(
+	'class' => 'btn_login',
+	'id' => 'facebook'
+);
+
+// The permissions we need from the user
+$permissions = array('email','user_photos');
+
+echo $this->loginButton($label, $options, $permissions);
+
 </pre>
 </div>
 		<div class="step">
-			<strong>Step 2.</strong> Create a simple model, like this:
-<pre><&#63;php
-App::uses('AppModel', 'Model');
+			<strong>Example 2.</strong> Get all the albums from the user:
+<pre>
 
-class User extends AppModel {
-}
-&#63;></pre>
+	// In the Controller include the FacebookAlbum model
+	public $uses = array('Facebook.FacebookAlbum');
+	
+	// In the same Controller, in an action
+	$albums = $this->FacebookAlbum->find('all', array('fields' => array('FacebookAlbum.name'), 'conditons' => array('owner' => $this->Auth->User('facebook_id'))));
+
+	// In the view from that action
+	foreach ($albums as $album) {
+		echo $album['FacebookAlbum']['name']."<br />";
+	}
+	
+</pre>
 		</div>
-		<div class="step">
-			<strong>Step 3.</strong> Create 2 views. One in Users/login.ctp and the other in Users/view.ctp:
-			<p>login.ctp
-			<pre><&#63;php
-	echo $this->Facebook->loginButton('Login');
-&#63;></pre></p>
-			<p>view.ctp
-			<pre><&#63;php
-	echo "Hello ".$userInfo['FacebookUser']['first_name']." ".$userInfo['FacebookUser']['last_name']."<br />";
-	echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));
-&#63;></pre></p>
-		</div>
-		
-		<p>Congratulations! Now go to www.yourdomain.com/path/to/cake/ and test that everything works as expected!</p>
 
-<strong>Appendix</strong>
+<strong>More information</strong>
 
-<p>For now, you can only read information, by using the method <strong>find('all', $options)</strong>. For more information you can look at the <a href="https://developers.facebook.com/docs/reference/fql/">FQL reference</a>. Another limitation, is that only supports "user" table by now.</p>
-
-<p>For example, to read information from the FQL table "user", you can do in any controller:
-	<pre>$uses = array('Facebook.FacebookUser');
-public function viewUser() {
-	$options = array(
-		'fields' => array('username','first_name','last_name'),
-		'conditions' => ('id' => '1390757189')
-	);
-	$userInfo = $this->FacebookUser->find('all', $options);
-}</pre></p>
+<p>Some points to take into account:</p>
+<ul>
+	<li>From the CRUD, only R works. This means that only reads.</li>
+	<li>For reading, only supports the method <strong>$model->find('all', $options);</strong></li>
+	<li>The models are taken from the <a href="https://developers.facebook.com/docs/reference/fql/" target="_blank">FQL tables</a>. The supported ones are:
+		<ul>
+			<li>FacebookUser (user)</li>
+			<li>FacebookAlbum (album)</li>
+			<li>FacebookPage (page)</li>
+			<li>FacebookPageAdmin (page_admin)</li>
+		</ul>
+	</li>
+	<li>Models are related using <a href="http://book.cakephp.org/2.0/en/models/associations-linking-models-together.html" target="_blank">CakePHP Model relations</a>.</li>
+</ul>
 
 <h3>How to Contribute</h3>
 
+<p>You can contribute by working directly on the core or expanding the supported models.</p>
 <p>If you want to contribute please get in touch through the <a href="#comments">support section</a>, by <a href="http://twitter.com/finomdq" target="_blank">twitter</a> or <a href="https://github.com/marianofino/Facebook-Plugin-for-CakePHP" target="_blank">github</a>. Also, you can fix or submit new issues on <a href="https://github.com/marianofino/Facebook-Plugin-for-CakePHP/issues" target="_blank">github</a>.</p>
 
 <h3>Authors and Contributors</h3>

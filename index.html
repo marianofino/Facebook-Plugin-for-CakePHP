@@ -100,10 +100,13 @@ class User extends AppModel {
 <pre>
 
 // In the Controller include FacebookHelper
-$helpers = array('Facebook.Facebook');
+public $helpers = array('Facebook.Facebook');
 
-// In the View print the login button
+// In the View (probably in Users/login.ctp) print the login button
 echo $this->Facebook->loginButton();
+
+// In the View (probably in Users/logout.ctp) print the logout button
+echo $this->Html->link('Logout', array('plugin' => 'facebook', 'controller' => 'users', 'action' => 'logout'));
 
 </pre>
 <p>By default, the above example will print a raw link with the label "Login". If you want to customize it, you can by passing some params:</p>

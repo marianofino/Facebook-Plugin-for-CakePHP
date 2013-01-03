@@ -21,41 +21,18 @@
 App::uses('AppModel', 'Model');
 class FacebookUser extends AppModel {
     public $useDbConfig = 'facebook';
-	public $useTable = "user";
-	public $primaryKey = "uid";
+	public $useTable = "page";
+	public $primaryKey = "page_id";
 	public $cacheQueries = true;
 	
     public $hasAndBelongsToMany = array(
-        'FacebookPage' => array(
-            'className'    => 'Facebook.FacebookPage',
+        'FacebookUser' => array(
+            'className'    => 'Facebook.FacebookUser',
             'joinTable' => 'page_admin',
-            'foreignKey'  => 'uid',
-            'associationForeignKey' => 'page_id',
-            'with' => 'Facebook.FacebookPageAdmin'
+            'foreignKey'  => 'page_id',
+            'associationForeignKey' => 'uid',
+            'with' => 'FacebookPageAdmin'
         )
     );
-
-    public $hasMany = array(
-        'FacebookAlbum' => array(
-            'className'    => 'Facebook.FacebookAlbum',
-            'foreignKey'  => 'owner'
-        )
-    );
-	
-	public function getLoginData() {
-		$fields = array(
-            "FacebookUser.uid",
-            "FacebookUser.username"
-		);
-		return $this->find('all', array('fields' => $fields));
-	}
-	
-	public function parseDataForDb($fb_user) {
-    	$user = array();
-    	foreach ($fb_user['FacebookUser'] as $field) {
-    		$user['User'][] = $field;
-    	}
-		return $user;
-	}
 }
 ?>

@@ -17,45 +17,20 @@
  * 
  *  @copyright Copyright (c) 2012 - Mariano Finochietto // twitter: @finomdq // github: @marianofino 
  */
- 
+
 App::uses('AppModel', 'Model');
-class FacebookUser extends AppModel {
+class FacebookAlbum extends AppModel {
     public $useDbConfig = 'facebook';
-	public $useTable = "user";
-	public $primaryKey = "uid";
+	public $useTable = "album";
+	public $primaryKey = "aid";
 	public $cacheQueries = true;
 	
-    public $hasAndBelongsToMany = array(
-        'FacebookPage' => array(
-            'className'    => 'Facebook.FacebookPage',
-            'joinTable' => 'page_admin',
-            'foreignKey'  => 'uid',
-            'associationForeignKey' => 'page_id',
-            'with' => 'Facebook.FacebookPageAdmin'
+    public $belongsTo = array(
+        'FacebookUser' => array(
+            'className'    => 'Facebook.FacebookUser',
+            'foreignKey'  => 'uid'
         )
     );
-
-    public $hasMany = array(
-        'FacebookAlbum' => array(
-            'className'    => 'Facebook.FacebookAlbum',
-            'foreignKey'  => 'owner'
-        )
-    );
-	
-	public function getLoginData() {
-		$fields = array(
-            "FacebookUser.uid",
-            "FacebookUser.username"
-		);
-		return $this->find('all', array('fields' => $fields));
-	}
-	
-	public function parseDataForDb($fb_user) {
-    	$user = array();
-    	foreach ($fb_user['FacebookUser'] as $field) {
-    		$user['User'][] = $field;
-    	}
-		return $user;
-	}
 }
+
 ?>

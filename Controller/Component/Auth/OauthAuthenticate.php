@@ -31,27 +31,29 @@
                         . "&redirect_uri=" . urlencode($this->settings["url"])
                            . "&client_secret=" . $this->settings["app_secret"]
                            . "&code=" . $request->query['code'];
-                           
+                    
+					//TODO: use cake method to make request
                     $response = file_get_contents($token_url);
                     $params = null;
                     parse_str($response, $params);
                     if (isset($params['access_token'])) {
-						// Saves access_token in Session
+						// Saves acces_token in Session
+						//TODO: use cake method to save in session
 						$_SESSION['access_token'] = $params['access_token'];
 						
+						// Get's user data from Facebook
                         App::uses('FacebookUser', 'Facebook.Model');
 						$FacebookUser = new FacebookUser();
-                        $fb_user = $FacebookUser->getFullData();
+                        $FacebookUser->recursive = -1;
+                        $fb_user = $FacebookUser->getLoginData();
 						
+						// Checks if user exists, if not saves it in db
                         App::uses('User', 'Model');
                         $User = new User();
                         $user = $User->find("first",array("conditions" => array("username" => $fb_user['FacebookUser']['username'])));
-                        if (!$user) {
-                            $user = array(
-                                "User" => array(
-                                    "username" => $fb_user['FacebookUser']['username']
-                                )
-                            );
+						
+						if (!$user) {
+                        	$user = $FacebookUser->parseDataForDb($fb_user);
                             $User->create();
                             $User->save($user);
                             $user["User"]["id"] = $User->getLastInsertID();

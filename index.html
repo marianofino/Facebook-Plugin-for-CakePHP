@@ -129,16 +129,16 @@ echo $this->loginButton($label, $options, $permissions);
 			<strong>Example 2.</strong> Get all the albums from the user:
 <pre>
 
-	// In the Controller include the FacebookAlbum model
-	public $uses = array('Facebook.FacebookAlbum');
+// In the Controller include the FacebookAlbum model
+public $uses = array('Facebook.FacebookAlbum');
 	
-	// In the same Controller, in an action
-	$albums = $this->FacebookAlbum->find('all', array('fields' => array('FacebookAlbum.name'), 'conditons' => array('owner' => $this->Auth->User('uid'))));
+// In the same Controller, in an action
+$albums = $this->FacebookAlbum->find('all', array('fields' => array('FacebookAlbum.name'), 'conditons' => array('owner' => $this->Auth->User('uid'))));
 
-	// In the view from that action
-	foreach ($albums as $album) {
-		echo $album['FacebookAlbum']['name']."<br />";
-	}
+// In the view from that action
+foreach ($albums as $album) {
+	echo $album['FacebookAlbum']['name']."<br />";
+}
 	
 </pre>
 		</div>

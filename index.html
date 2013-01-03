@@ -137,6 +137,7 @@ public $uses = array('Facebook.FacebookAlbum');
 	
 // In the same Controller, in an action
 $albums = $this->FacebookAlbum->find('all', array('fields' => array('FacebookAlbum.name'), 'conditons' => array('owner' => $this->Auth->User('uid'))));
+$this->set(compact('albums'));
 
 // In the view from that action
 foreach ($albums as $album) {

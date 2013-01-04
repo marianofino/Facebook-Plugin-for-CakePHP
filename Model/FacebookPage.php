@@ -19,7 +19,7 @@
  */
  
 App::uses('AppModel', 'Model');
-class FacebookUser extends AppModel {
+class FacebookPage extends AppModel {
     public $useDbConfig = 'facebook';
 	public $useTable = "page";
 	public $primaryKey = "page_id";

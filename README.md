@@ -2,6 +2,10 @@
 
 DataSource and oAuth for CakePHP 2.x based on Facebook API
 
+##Goal</h3>
+
+To make an abstract layer between CakePHP and Facebook, so anyone that knows CakePHP can easily build apps for Facebook without knowing the API.
+
 ## Installation
 **Step 1.** Download, unzip and rename the folder to Facebook and move it to the Plugin's folder of your CakePHP project.
 

@@ -152,11 +152,12 @@ foreach ($albums as $album) {
 <p>Some points to take into account:</p>
 <ul>
 	<li>From the CRUD, only R works. This means that only reads.</li>
-	<li>For reading, only supports the method <strong>$model->find('all', $options);</strong></li>
+	<li>For reading, only supports the methods <strong>$model->find('all', $options);</strong> and <strong>$model->find('first', $options);</strong></li>
 	<li>The models are taken from the <a href="https://developers.facebook.com/docs/reference/fql/" target="_blank">FQL tables</a>. The supported ones are:
 		<ul>
 			<li>FacebookUser (user)</li>
 			<li>FacebookAlbum (album)</li>
+			<li>FacebookPhoto (photo)</li>
 			<li>FacebookPage (page)</li>
 			<li>FacebookPageAdmin (page_admin)</li>
 		</ul>

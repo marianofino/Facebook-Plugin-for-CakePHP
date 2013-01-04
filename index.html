@@ -31,6 +31,10 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+        <h3>Goal</h3>
+        
+        <p>To make an abstract layer between CakePHP and Facebook, so anyone that knows CakePHP can easily build apps for Facebook without knowing the API.</p>
+        
         <h3>Installation</h3>
         <div class="step">
         	<strong>Step 1. </strong>Download, unzip and rename the folder to <strong>Facebook</strong> and move it to the Plugin's folder of your CakePHP project.</li>
@@ -109,7 +113,7 @@ echo $this->Facebook->loginButton();
 echo $this->Html->link('Logout', array('plugin' => 'facebook', 'controller' => 'users', 'action' => 'logout'));
 
 </pre>
-<p>By default, the above example will print a raw link with the label "Login". If you want to customize it, you can by passing some params:</p>
+<p>By default, the above example will print a raw link with the label "Login". If you want to customize it, you can easily do it by passing some params:</p>
 <pre>
 
 // The text of the link
@@ -153,6 +157,7 @@ foreach ($albums as $album) {
 <ul>
 	<li>From the CRUD, only R works. This means that only reads.</li>
 	<li>For reading, only supports the methods <strong>$model->find('all', $options);</strong> and <strong>$model->find('first', $options);</strong></li>
+	<li>You <strong>must always</strong> include the classname in fields and conditions (e.g. "FacebookAlbum.name", not just "name")</li>
 	<li>The models are taken from the <a href="https://developers.facebook.com/docs/reference/fql/" target="_blank">FQL tables</a>. The supported ones are:
 		<ul>
 			<li>FacebookUser (user)</li>

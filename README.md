@@ -11,19 +11,36 @@ DataSource and oAuth for CakePHP 2.x based on Facebook API
         array('Facebook' => array('bootstrap' => true))
     );
 
-**Step 3.** You must have a table for Users, with at least one field for "username". Something like this is fine:
+**Step 3.** You must have a table for Users and a model, with at least one field for "uid". If you don't have one, something like this is fine:
+
+Table:
 
     CREATE TABLE users (
         id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(50)
+        username VARCHAR(50),
+        uid VARCHAR(50)
     );
+
+Model:
+
+    <?php
+    App::uses('AppModel', 'Model');
+
+    class User extends AppModel {
+    }
+    ?>
 
 **Step 4.** Enable Auth component in AppController.php and link it to Facebook Authentication. For example:
 
     public $components = array(
         'Session',
         'Auth' => array(
-            'loginRedirect' => array('controller' => 'users', 'action' => 'view'),
+            'loginAction' => array(
+                'plugin' => 'facebook',
+                'controller' => 'users',
+                'action' => 'login'
+            ),
+            'loginRedirect' => '/',
             'logoutRedirect' => '/',
             'authenticate' => array(
                 'all' => array('userModel' => 'User'),
@@ -38,78 +55,70 @@ DataSource and oAuth for CakePHP 2.x based on Facebook API
         'datasource' => 'Facebook.FQL',
         'app_url' => 'http://www.yourdomain.com/path/to/cake', // or just http://www.yourdomain.com if it's on the root
         'app_id' => '35868871xxxxxx',
-        'app_secret' => '6059c46e362346xxxxxxxxxxxx',
-        'login_url' => array('controller' => 'users', 'action' => 'login') // probably right
+        'app_secret' => '6059c46e362346xxxxxxxxxxxx'
     );
 
-You're ready!! Now proceed with the tutorial.
+You're ready!! Now proceed with the usage section.
 
 ## Usage
-This is a tiny tutorial to learn the basis:
+Here are some examples to learn the basis:
 
-**Step 1.** Create a controller with some default actions for login() and logout(). Also we will add some method to test the API. Create UsersController.php like this:
+**Example 1.** How to natively login to CakePHP Auth using Facebook:
 
-    <?php
-        App::uses('AppController', 'Controller');
-        class UsersController extends AppController {
-            public $uses = array('Facebook.FacebookUser');
-            public $helpers = array('Facebook.Facebook','Session','Html');
+    // In the Controller include FacebookHelper
+    public $helpers = array('Facebook.Facebook');
 
-            public function login() {
-                if ($this->Auth->login()) {
-                    $this->redirect($this->Auth->redirect());
-                }
-            }
+    // In the View (probably in Users/login.ctp) print the login button
+    echo $this->Facebook->loginButton();
 
-            public function logout() {
-                $this->redirect($this->Auth->logout());
-            }
+    // In the View print the logout button
+    echo $this->Html->link('Logout', array('plugin' => 'facebook', 'controller' => 'users', 'action' => 'logout'));
+
+By default, the above example will print a raw link with the label "Login". If you want to customize it, you can easily do it by passing some params:
+
+    // The text of the link
+    $label = "Facebook Login!";
+
+    // The same options as HtmlHelper::link()
+    $options = array(
+        'class' => 'btn_login',
+        'id' => 'facebook'
+    );
+
+    // The permissions we need from the user
+    $permissions = array('email','user_photos');
+
+    echo $this->loginButton($label, $options, $permissions);
+
+**Example 2.** Get all the albums from the user:
+
+    // In the Controller include the FacebookAlbum model
+    public $uses = array('Facebook.FacebookAlbum');
 	
-            public function view() {
-                $userInfo = $this->FacebookUser->find('all', array('conditions' => array('username' => $this->Auth->User('username')), 'fields' => array('first_name','last_name')));
-                $this->set(compact('userInfo'));
-            }
-        }
-    ?>
+    // In the same Controller, in an action
+    $albums = $this->FacebookAlbum->find('all', array('fields' => array('FacebookAlbum.name'), 'conditions' => array('FacebookAlbum.owner' => $this->Auth->User('uid'))));
+    $this->set(compact('albums'));
 
-**Step 2.** Create a simple model, like this:
-
-    <?php
-        App::uses('AppModel', 'Model');
-
-        class User extends AppModel {
-        }
-    ?>
-
-**Step 3.** Create 2 views. One in Users/login.ctp and the other in Users/view.ctp:
-
-login.ctp
-
-    <?php
-        echo $this->Facebook->loginButton('Login');
-    ?>
-view.ctp
-
-    <?php
-        echo "Hello ".$userInfo['FacebookUser']['first_name']." ".$userInfo['FacebookUser']['last_name'];
-        echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout'));
-    ?>
-
-Congratulations! Now go to www.yourdomain.com/path/to/cake/ and test that everything works as expected!
-
-**Appendix**
-For now, you can only read information, by using the method find('all', $options). For more information you can look at the FQL reference. Another limitation, is that only supports "user" table by now.
-
-For example, to read information from the FQL table "user", you can do in any controller:
-
-    $uses = array('Facebook.FacebookUser');
-    public function viewUser() {
-        $options = array(
-            'fields' => array('username','first_name','last_name'),
-            'conditions' => ('id' => '1390757189')
-        );
-        $userInfo = $this->FacebookUser->find('all', $options);
+    // In the view from that action
+    foreach ($albums as $album) {
+        echo $album['FacebookAlbum']['name']." - ";
     }
+	
+**More information**
+
+Some points to take into account:
+
+* From the CRUD, only R works. This means that only reads.
+* For reading, only supports the methods $model->find('all', $options); and $model->find('first', $options);
+* You **must always** include the classname in fields and conditions (e.g. "FacebookAlbum.name", not just "name")
+* The models are taken from the [FQL tables](https://developers.facebook.com/docs/reference/fql/). The supported ones are:
+ * FacebookUser (user)
+ * FacebookAlbum (album)
+ * FacebookPhoto (photo)
+ * FacebookPage (page)
+ * FacebookPageAdmin (page_admin)
+* Models are related using [CakePHP Model relations](http://book.cakephp.org/2.0/en/models/associations-linking-models-together.html).
+
 
 ## How to Contribute
 If you want to contribute please get in touch through the [support section](http://marianofino.github.com/Facebook-Plugin-for-CakePHP/#comments), by [twitter](https://twitter.com/finomdq) or [github](https://github.com/marianofino). Also, you can fix or submit new issues on [github](https://github.com/marianofino/Facebook-Plugin-for-CakePHP/issues).

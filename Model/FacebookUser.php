@@ -47,7 +47,7 @@ class FacebookUser extends AppModel {
             "FacebookUser.uid",
             "FacebookUser.username"
 		);
-		return $this->find('all', array('fields' => $fields));
+		return $this->find('first', array('fields' => $fields));
 	}
 	
 	public function parseDataForDb($fb_user) {

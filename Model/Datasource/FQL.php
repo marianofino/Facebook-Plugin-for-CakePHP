@@ -82,11 +82,15 @@ class FQL extends DataSource {
         if ($queryData['fields'] == 'COUNT') {
             return array(array(array('count' => 1)));
         }
-		
+
 		// TODO: improve conditions to more supported by FQL
+		// TODO: add LIMIT (for find('first')!!), ORDER BY, etc.
 		// TODO: make recursive 2
 		
 		$queryData['fields'] = $this->getOrganizedFields($queryData['fields']);
+		if(!isset($queryData['fields'][$model->alias][$model->primaryKey])) {
+			$queryData['fields'][$model->alias][] = $model->primaryKey;
+		}
 		if (!is_null($queryData['conditions'])) {
 			$queryData['conditions'] = $this->getOrganizedConditions($queryData['conditions']);
 		}
@@ -95,7 +99,7 @@ class FQL extends DataSource {
 		 * Build Statement
 		 */ 
 		$mainQuery = $this->buildStatement($queryData, $model->table, $model->alias);
-		
+
 		// Get Associated queries, based on recursive level
 		$assoc_queries = "";
 		if ($model->recursive > -1) {
@@ -107,7 +111,7 @@ class FQL extends DataSource {
 		}
 		
 		$fql = $this->formatQuery($model->alias,$mainQuery).$assoc_queries;
-		
+
 		 /**
          * Now we get, decode and return the remote data.
          */
@@ -127,18 +131,53 @@ class FQL extends DataSource {
             throw new CakeException($error);
 		}
 		
-		// Format a CakePHP friendly result
+		/*
+		 *  Format a CakePHP friendly result
+		 */
 		$result = array();
+		// Get main model data
+		$mainResult = $res['data'][0];
+		unset($res['data'][0]);
+		// Go through main model records
+		foreach ($mainResult["fql_result_set"] as $r) {
+			$aux_result = array();
+			$aux_result[$mainResult["name"]] = $r;
+			// Go through related models
+			foreach ($res['data'] as $related) {
+				$foreignKey = $this->getForeignKey($model, $related["name"]);
+				// Go through related models records
+				foreach ($related["fql_result_set"] as $set) {
+					// If a related record is linked to actual model record, save it
+					if ($set[$foreignKey] == $r[$model->primaryKey]) {
+						$aux_result[$related["name"]][] = $set;
+					}
+				}
+			}
+			$result[] = $aux_result;
+		}
+		
+		
+		/*
 		foreach ($res['data'] as $r) {
 			if (count($r["fql_result_set"]) == 1) {
 				$result[$r["name"]] = $r["fql_result_set"][0];
 			} else {
-				$result[$r["name"]] = $r["fql_result_set"];
+				foreach ($r["fql_result_set"] as $entry) {
+					$result[] = array(
+						$r["name"] => $entry
+					);
+				}
 			}
 		}
-		
+		*/
         return $result;
     }
+
+	public function getForeignKey($model,$related_model) {
+		$associations = $model->getAssociated();
+		$assoc = $model->$associations[$related_model];
+		return $assoc[$related_model]["foreignKey"];
+	}
 
 	public function getAssociatedQueries($model,$enabled_assoc,$mainQueryData) {
 		$associations = $model->getAssociated();
@@ -188,7 +227,14 @@ class FQL extends DataSource {
 						$mainQueryData['fields'][$assoc_model->alias][] = $related_model->primaryKey;
 					}
 					// Build query
-					$mainQueryData['conditions'][$assoc_model->alias][$assoc_settings[$k]['foreignKey']] = $mainQueryData['conditions'][$model->alias][$model->primaryKey];
+					// Check if there is a condition for primary key, if not build it
+					if (!isset($mainQueryData['conditions'][$model->alias][$model->primaryKey])) {
+						//TODO: Don't make it hardcoded
+						$mainQueryData['fields'][$assoc_model->alias][] = $assoc_settings[$k]['foreignKey'];
+						$mainQueryData['conditions'][$assoc_model->alias][$assoc_settings[$k]['foreignKey']] = array("SELECT+".$model->primaryKey."+FROM+%23".$model->alias);
+					} else {
+						$mainQueryData['conditions'][$assoc_model->alias][$assoc_settings[$k]['foreignKey']] = $mainQueryData['conditions'][$model->alias][$model->primaryKey];
+					}
 					$queryData = array(
 						'fields' => $mainQueryData['fields'],
 						'conditions' => $mainQueryData['conditions']

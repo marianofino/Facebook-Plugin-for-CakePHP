@@ -19,23 +19,16 @@
  */
 
 App::uses('AppModel', 'Model');
-class FacebookAlbum extends AppModel {
+class FacebookPhoto extends AppModel {
     public $useDbConfig = 'facebook';
-	public $useTable = "album";
-	public $primaryKey = "aid";
+	public $useTable = "photo";
+	public $primaryKey = "pid";
 	public $cacheQueries = true;
 	
-    public $hasMany = array(
-        'FacebookPhoto' => array(
-            'className'    => 'Facebook.FacebookPhoto',
-            'foreignKey'  => 'aid'
-        )
-    );
-	
     public $belongsTo = array(
-        'FacebookUser' => array(
-            'className'    => 'Facebook.FacebookUser',
-            'foreignKey'  => 'uid'
+        'FacebookAlbum' => array(
+            'className'    => 'Facebook.FacebookAlbum',
+            'foreignKey'  => 'aid'
         )
     );
 }

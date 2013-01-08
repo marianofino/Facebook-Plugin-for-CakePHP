@@ -31,7 +31,7 @@ class FacebookPage extends AppModel {
             'joinTable' => 'page_admin',
             'foreignKey'  => 'page_id',
             'associationForeignKey' => 'uid',
-            'with' => 'FacebookPageAdmin'
+            'with' => 'Facebook.FacebookPageAdmin'
         )
     );
 }

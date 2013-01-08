@@ -25,12 +25,14 @@ class FacebookPageAdmin extends AppModel {
 	public $primaryKey = "page_id";
 	public $cacheQueries = true;
 	
-    public $hasAndBelongsToMany = array(
+    public $belongsTo = array(
         'FacebookUser' => array(
+            'className'    => 'Facebook.FacebookUser',
+            'foreignKey'  => 'uid'
+        ),
+        'FacebookPage' => array(
             'className'    => 'Facebook.FacebookPage',
-            'joinTable' => 'page',
-            'foreignKey'  => 'page_id',
-            'associationForeignKey' => 'uid'
+            'foreignKey'  => 'page_id'
         )
     );
 }

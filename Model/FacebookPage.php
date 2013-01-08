@@ -18,13 +18,8 @@
  *  @copyright Copyright (c) 2012 - Mariano Finochietto // twitter: @finomdq // github: @marianofino 
  */
  
-<<<<<<< HEAD
-App::uses('AppModel', 'Model');
-class FacebookPage extends AppModel {
-=======
 App::uses('FacebookAppModel', 'Facebook.Model');
 class FacebookPage extends FacebookAppModel {
->>>>>>> dev
     public $useDbConfig = 'facebook';
 	public $useTable = "page";
 	public $primaryKey = "page_id";

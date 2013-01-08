@@ -17,6 +17,7 @@
  * 
  *  @copyright Copyright (c) 2012 - Mariano Finochietto // twitter: @finomdq // github: @marianofino 
  */
-class FacebookAppModel extends AppController {
+App::uses('AppModel', 'Model');
+class FacebookAppModel extends AppModel {
 }
 ?>

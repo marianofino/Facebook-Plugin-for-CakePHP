@@ -18,8 +18,8 @@
  *  @copyright Copyright (c) 2012 - Mariano Finochietto // twitter: @finomdq // github: @marianofino 
  */
 
-App::uses('AppModel', 'Model');
-class FacebookPhoto extends AppModel {
+App::uses('FacebookAppModel', 'Facebook.Model');
+class FacebookPhoto extends FacebookAppModel {
     public $useDbConfig = 'facebook';
 	public $useTable = "photo";
 	public $primaryKey = "pid";

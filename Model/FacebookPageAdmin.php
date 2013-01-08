@@ -18,8 +18,8 @@
  *  @copyright Copyright (c) 2012 - Mariano Finochietto // twitter: @finomdq // github: @marianofino 
  */
 
-App::uses('AppModel', 'Model');
-class FacebookPageAdmin extends AppModel {
+App::uses('FacebookAppModel', 'Facebook.Model');
+class FacebookPageAdmin extends FacebookAppModel {
     public $useDbConfig = 'facebook';
 	public $useTable = "page_admin";
 	public $primaryKey = "page_id";

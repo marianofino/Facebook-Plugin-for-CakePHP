@@ -333,9 +333,11 @@ class FQL extends DataSource {
 								}
 								
 								$assoc_result = $this->filterResults($new_results, $a[key($a)]["attributes"]["foreignKey"], $d[$a[key($a)]["attributes"]["parentKey"]]);
-								$d[key($a)] = $assoc_result;
 								
-								$result[] = array($model => $d);
+								$result[] = array(
+									$model => $d,
+									key($a) => $assoc_result
+								);
 							break;
 							case "hasMany":
 								$assoc_result = $this->filterResults($a[key($a)]["results"], $a[key($a)]["attributes"]["foreignKey"], $d[$a[key($a)]["attributes"]["parentKey"]]);

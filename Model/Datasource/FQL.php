@@ -96,6 +96,9 @@ class FQL extends DataSource {
 		// Get query valid associations
 		$associations = $this->getAssociations($model->recursive);
 		
+		// Add primaryKey to main model
+		$this->queryData["fields"][$model->alias][] = $model->primaryKey;
+		
 		// Add all relevant classes and its data
 		$this->addClass($model);
 		while (($assoc = each($associations)) && $assoc !== false) {
@@ -151,7 +154,6 @@ class FQL extends DataSource {
 							$this->classes[$model->alias]["queryData"]["fields"][] = $foreignKey;
 						break;
 					}
-					$this->classes[$model->alias]["queryData"]["fields"][] = $model->primaryKey;
 					$this->addClass($related_model,array("type" => $assoc["value"], "parent" => $parent_model, "attributes" => $c));
 				}
 			}

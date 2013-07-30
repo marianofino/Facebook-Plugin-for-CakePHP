@@ -52,7 +52,7 @@
                         $User = new User();
                         $user = $User->find("first",array("conditions" => array("User.uid" => $fb_user['FacebookUser']['uid'])));
 
-						if ($user === false) {
+			if (empty($user)) {
                         	$user = $FacebookUser->parseDataForDb($fb_user);
                             $User->create();
                             $User->save($user);

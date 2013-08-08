@@ -171,7 +171,7 @@ class FQL extends DataSource {
 		}
 		$params['format'] = "json-strings";
 		$json = $this->Http->get('https://graph.facebook.com/fql?q={'.$fql.'}', $params);
-	    $res = json_decode($json, true);
+		$res = json_decode($json, true);
 		if (isset($res['error'])) {
 			$error = "Facebook API error code ".$res['error']['code']." (".$res['error']['type']."): ".$res['error']['message'];
         	throw new CakeException($error);
@@ -181,7 +181,9 @@ class FQL extends DataSource {
 		$this->parseResult($this->classes, $res['data']);
 				
 		// Get & return results
-		return $this->getResults($this->classes);
+		$ret = $this->getResults($this->classes);
+		unset($this->classes);
+		return $ret;
     }
 
 	public function resolveForeignKey($parent_model, $related_model) {

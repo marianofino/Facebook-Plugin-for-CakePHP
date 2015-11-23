@@ -1,5 +1,7 @@
 # Facebook Plugin for CakePHP
 
+**UPDATE: This project doesn't work anymore because the API calls are outdated. The code is kept as a reference for any future implementation.**
+
 DataSource and oAuth for CakePHP 2.x based on Facebook API
 
 ##Goal</h3>
